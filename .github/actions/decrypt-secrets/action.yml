@@ -13,6 +13,7 @@ runs:
   using: "composite"
   steps:
     - name: install python deps
+      shell: bash
       run: |
         pip install pyzipper
     - name: Decrypt and Mask
