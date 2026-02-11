@@ -43,17 +43,9 @@ env:
 
 jobs:
   setup:
-    name: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        
-      - uses: Wandalen/wretry.action@master
-        with:
-          action: ./.github/workflows/fetch-encrypted-secrets.yml
-          with: |
-            zip_url_json: ${{ inputs.zip_url }}
+    uses: ./.github/workflows/fetch-encrypted-secrets.yml
+    with:
+      zip_url_json: ${{ inputs.zip_url }}
 
   generate-bridge:
     uses: ./.github/workflows/bridge.yml
@@ -93,7 +85,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+        
       - uses: actions/download-artifact@v4
         with:
           name: encrypted-secrets-zip
