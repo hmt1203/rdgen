@@ -43,9 +43,12 @@ env:
 
 jobs:
   setup:
-    uses: ./.github/workflows/fetch-encrypted-secrets.yml
-    with:
-      zip_url_json: ${{ inputs.zip_url }}
+    steps:
+      - uses: Wandalen/wretry.action@master
+        with:
+          action: ./.github/workflows/fetch-encrypted-secrets.yml
+          with: |
+            zip_url_json: ${{ inputs.zip_url }}
 
   generate-bridge:
     uses: ./.github/workflows/bridge.yml
@@ -85,7 +88,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
       - uses: actions/download-artifact@v4
         with:
           name: encrypted-secrets-zip
