@@ -45,6 +45,9 @@ jobs:
         run: |
           git clone https://github.com/rustdesk-org/RustDeskTempTopMostWindow RustDeskTempTopMostWindow
 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           name: encrypted-secrets-zip
