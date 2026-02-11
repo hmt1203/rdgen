@@ -43,6 +43,8 @@ env:
 
 jobs:
   setup:
+    name: setup
+    runs-on: ubuntu-latest
     steps:
       - uses: Wandalen/wretry.action@master
         with:
