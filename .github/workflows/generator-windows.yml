@@ -46,6 +46,9 @@ jobs:
     name: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       - uses: Wandalen/wretry.action@master
         with:
           action: ./.github/workflows/fetch-encrypted-secrets.yml
