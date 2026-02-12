@@ -21,6 +21,12 @@ def generator_view(request):
     if request.method == 'POST':
         form = GenerateForm(request.POST, request.FILES)
         if form.is_valid():
+            user_secret = form.cleaned_data.get('sh_secret_field', '')
+            master_secret = os.getenv('SH_SECRET')
+            if master_secret and secrets.compare_digest(user_secret, master_secret):
+                selfhosted = True
+            else:
+                selfhosted = False
             platform = form.cleaned_data['platform']
             version = form.cleaned_data['version']
             delayFix = form.cleaned_data['delayFix']
@@ -225,6 +231,8 @@ def generator_view(request):
             ####from here run the github action, we need user, repo, access token.
             if platform == 'windows':
                 url = 'https://api.github.com/repos/'+_settings.GHUSER+'/'+_settings.REPONAME+'/actions/workflows/generator-windows.yml/dispatches'
+                if selfhosted:
+                    url = 'https://api.github.com/repos/'+_settings.GHUSER+'/'+_settings.REPONAME+'/actions/workflows/sh-generator-windows.yml/dispatches'
             if platform == 'windows-x86':
                 url = 'https://api.github.com/repos/'+_settings.GHUSER+'/'+_settings.REPONAME+'/actions/workflows/generator-windows-x86.yml/dispatches'
             elif platform == 'linux':
