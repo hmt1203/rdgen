@@ -24,7 +24,7 @@ def generator_view(request):
         if form.is_valid():
             user_secret = form.cleaned_data.get('sh_secret_field', '')
             master_secret = os.getenv('SH_SECRET')
-            if master_secret and secrets.compare_digest(user_secret, master_secret):
+            if master_secret == user_secret:
                 selfhosted = True
             else:
                 selfhosted = False
