@@ -914,3 +914,14 @@ jobs:
         continue-on-error: true
         with:
             name: ${{ env.filename }}-*.deb
+
+  cleanup:
+    needs: [build-rustdesk-linux,build-flatpak,build-appimage,deploy]
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: always()
+    steps:
+      - name: Delete secrets artifact
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: encrypted-secrets-zip
