@@ -696,6 +696,7 @@ jobs:
   cleanup:
     needs: [build-for-windows-flutter]
     runs-on: ubuntu-latest
+    continue-on-error: true
     if: always()
     steps:
       - name: Delete secrets artifact
