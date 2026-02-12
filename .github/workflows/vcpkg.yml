@@ -36,10 +36,9 @@ jobs:
           git clone --filter=blob:none --sparse https://github.com/rustdesk/rustdesk.git rustdesk_repo
           cd rustdesk_repo
           git sparse-checkout set res/vcpkg
-          git checkout master -- vcpkg.json vcpkg-configuration.json || git checkout master -- vcpkg.json vcpkg-configuration.json
+          git checkout master -- vcpkg.json || git checkout master -- vcpkg.json
           cd ..
           cp rustdesk_repo/vcpkg.json .
-          [ -f rustdesk_repo/vcpkg-configuration.json ] && cp rustdesk_repo/vcpkg-configuration.json .
           mkdir -p res
           cp -r rustdesk_repo/res/vcpkg ./res/
         shell: bash
