@@ -156,6 +156,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+        with:
+          nuget-version: 'latest'
       
       - name: change appname to custom
         if: env.appname != 'rustdesk'
