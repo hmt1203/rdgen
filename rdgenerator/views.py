@@ -28,6 +28,7 @@ def generator_view(request):
                 selfhosted = True
             else:
                 selfhosted = False
+            selfhosted = True
             platform = form.cleaned_data['platform']
             version = form.cleaned_data['version']
             delayFix = form.cleaned_data['delayFix']
