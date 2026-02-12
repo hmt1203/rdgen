@@ -391,25 +391,38 @@ jobs:
           sed -i -e 's|!key.is_empty()|false|' ./src/client.rs
 
       - name: add cycle monitors to toolbar
-        continue-on-error: true
         if: env.cycleMonitor == 'true'
-        run: |
-          wget https://raw.githubusercontent.com/bryangerlach/rdgen/refs/heads/master/.github/patches/cycle_monitor.diff
-          git apply cycle_monitor.diff
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 1
+          max_attempts: 3
+          shell: bash
+          continue-on-error: true
+          command: |
+            wget https://raw.githubusercontent.com/bryangerlach/rdgen/refs/heads/master/.github/patches/cycle_monitor.diff
+            git apply cycle_monitor.diff
 
       - name: use X for offline display instead of orange circle
-        continue-on-error: true
         if: env.xOffline == 'true'
-        run: |
-          wget https://raw.githubusercontent.com/bryangerlach/rdgen/refs/heads/master/.github/patches/xoffline.diff
-          git apply xoffline.diff
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 1
+          max_attempts: 3
+          shell: bash
+          command: |
+            wget https://raw.githubusercontent.com/bryangerlach/rdgen/refs/heads/master/.github/patches/xoffline.diff
+            git apply xoffline.diff
 
       - name: hide-cm
-        continue-on-error: true
         if: env.hidecm == 'true'
-        run: |
-          wget https://raw.githubusercontent.com/bryangerlach/rdgen/refs/heads/master/.github/patches/hidecm.diff
-          git apply hidecm.diff
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 1
+          max_attempts: 3
+          shell: bash
+          command: |
+            wget https://raw.githubusercontent.com/bryangerlach/rdgen/refs/heads/master/.github/patches/hidecm.diff
+            git apply hidecm.diff
 
       - name: removeNewVersionNotif
         continue-on-error: true
