@@ -23,8 +23,7 @@ def generator_view(request):
         form = GenerateForm(request.POST, request.FILES)
         if form.is_valid():
             user_secret = form.cleaned_data.get('sh_secret_field', '')
-            master_secret = os.getenv('SH_SECRET')
-            if master_secret == user_secret:
+            if _settings.SH_SECRET == user_secret:
                 selfhosted = True
             else:
                 selfhosted = False
