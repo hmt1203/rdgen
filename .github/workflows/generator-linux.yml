@@ -725,7 +725,7 @@ jobs:
           url: ${{ env.STATUS_URL }}
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"uuid": "${{ env.uuid }}", "status": "Generation failed, try again"}'
+          data: '{"uuid": "${{ env.uuid }}", "status": "${{ matrix.job.arch }} AppImage failed, waiting on others to finish."}'
 
       - name: failed
         if: cancelled()
@@ -734,7 +734,7 @@ jobs:
           url: ${{ env.STATUS_URL }}
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"uuid": "${{ env.uuid }}", "status": "Generation cancelled, try again"}'
+          data: '{"uuid": "${{ env.uuid }}", "status": "${{ matrix.job.arch }} AppImage cancelled, waiting on others to finish."}'
 
   build-flatpak:
     name: Build flatpak ${{ matrix.job.target }}${{ matrix.job.suffix }}
@@ -854,7 +854,7 @@ jobs:
           url: ${{ env.STATUS_URL }}
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"uuid": "${{ env.uuid }}", "status": "Generation failed, try again"}'
+          data: '{"uuid": "${{ env.uuid }}", "status": "${{ matrix.job.arch }} Flatpak failed, waiting on others to finish."}'
 
       - name: failed
         if: cancelled()
@@ -863,7 +863,7 @@ jobs:
           url: ${{ env.STATUS_URL }}
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"uuid": "${{ env.uuid }}", "status": "Generation cancelled, try again"}'
+          data: '{"uuid": "${{ env.uuid }}", "status": "${{ matrix.job.arch }} Flatpak cancelled, waiting on others to finish."}'
 
   deploy:
     needs: [build-rustdesk-linux,build-flatpak,build-appimage]
