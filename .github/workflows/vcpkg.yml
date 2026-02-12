@@ -9,7 +9,7 @@ on:
         default: 'Manual dependency update'
 
 env:
-  VCPKG_COMMIT_ID: '120deac3062162151622ca4860575a33844ba10b' # Example ID
+  VCPKG_COMMIT_ID: '120deac3062162151622ca4860575a33844ba10b'
 
 jobs:
   build-and-export:
@@ -20,18 +20,35 @@ jobs:
           - vcpkg-triplet: x64-windows-static
 
     steps:
+      - name: Enable Long Paths
+        run: git config --global core.longpaths true
+
+      - name: Install Build Tools
+        run: |
+          choco install nasm
+          echo "C:\Program Files\NASM" >> $GITHUB_PATH
+
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download RustDesk vcpkg.json
+      - name: Clone RustDesk overlays
         run: |
-          curl -L https://raw.githubusercontent.com/rustdesk/rustdesk/master/vcpkg.json -o vcpkg.json
+          git clone --filter=blob:none --sparse https://github.com/rustdesk/rustdesk.git rustdesk_repo
+          cd rustdesk_repo
+          # Added vcpkg-configuration.json to the list
+          git sparse-checkout set res/vcpkg vcpkg.json vcpkg-configuration.json
+          cd ..
+          cp rustdesk_repo/vcpkg.json .
+          # Copy configuration if it exists
+          [ -f rustdesk_repo/vcpkg-configuration.json ] && cp rustdesk_repo/vcpkg-configuration.json .
+          mkdir -p res
+          cp -r rustdesk_repo/res/vcpkg ./res/
         shell: bash
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          vcpkgDirectory: ${{ github.workspace }}/vcpkg # Using workspace is cleaner for artifacts
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
           doNotCache: false
 
